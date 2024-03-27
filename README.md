@@ -16,7 +16,7 @@ git submodule update --init --recursive
 
 ## How to run
 
-runc class at:
+run class at:
 ```
 ees/ees/src/test/java/io/github/agentsoz/ees/it
 /MixedTestRouting.java
