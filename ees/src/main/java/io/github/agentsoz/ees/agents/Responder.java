@@ -122,6 +122,17 @@ public class Responder extends Agent implements io.github.agentsoz.bdiabm.Agent 
 				suspend(false);
 			}
 		}
+		else if (content.getAction_type().equals(Constants.WALKTO1)) {
+			if (content.getState()==State.PASSED) {
+				// Wake up the agent that was waiting for external action to finish
+				// FIXME: BDI actions put agent in suspend, which won't work for multiple intention stacks
+				suspend(false);
+			} else if (content.getState()==State.FAILED) {
+				// Wake up the agent that was waiting for external action to finish
+				// FIXME: BDI actions put agent in suspend, which won't work for multiple intention stacks
+				suspend(false);
+			}
+		}
 	}
 
 	/**

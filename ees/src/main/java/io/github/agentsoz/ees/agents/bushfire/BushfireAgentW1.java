@@ -33,6 +33,7 @@ import io.github.agentsoz.dataInterface.DataServer;
 import io.github.agentsoz.ees.Constants;
 import io.github.agentsoz.ees.EmergencyMessage;
 import io.github.agentsoz.ees.Run;
+import io.github.agentsoz.ees.agents.archetype.GoalInitialResponseW1;
 import io.github.agentsoz.jill.core.beliefbase.BeliefBaseException;
 import io.github.agentsoz.jill.core.beliefbase.BeliefSetField;
 import io.github.agentsoz.jill.lang.Agent;
@@ -47,8 +48,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@AgentInfo(hasGoals={"io.github.agentsoz.ees.agents.archetype.GoalDoNothing"})
-public abstract class BushfireAgent extends  Agent implements io.github.agentsoz.bdiabm.Agent {
+@AgentInfo(hasGoals={"io.github.agentsoz.ees.agents.archetype.GoalDoNothingW1"})
+public abstract class BushfireAgentW1 extends  Agent implements io.github.agentsoz.bdiabm.Agent {
 
     private final Logger logger = LoggerFactory.getLogger("io.github.agentsoz.ees");
 
@@ -60,7 +61,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
     private QueryPerceptInterface queryInterface;
     private EnvironmentActionInterface envActionInterface;
     private double time = -1;
-    private BushfireAgent.Prefix prefix = new BushfireAgent.Prefix();
+    private BushfireAgentW1.Prefix prefix = new BushfireAgentW1.Prefix();
 
     // Defaults
     private DependentInfo dependentInfo = null;
@@ -112,7 +113,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
     private Set<String> messagesShared;
 
 
-    public BushfireAgent(String id) {
+    public BushfireAgentW1(String id) {
         super(id);
         locations = new HashMap<>();
         messagesShared = new HashSet<>();
@@ -148,7 +149,9 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
     boolean isDriving() {
         return activeEnvironmentActions != null && activeEnvironmentActions.containsKey(Constants.DRIVETO);
     }
-
+    boolean isWalking() {
+        return activeEnvironmentActions != null && activeEnvironmentActions.containsKey(Constants.WALKTO1);
+    }
     private void addActiveEnvironmentAction(EnvironmentAction activeEnvironmentAction) {
         activeEnvironmentActions.put(activeEnvironmentAction.getActionID(), activeEnvironmentAction);
     }
@@ -164,6 +167,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
     private void setLastDriveActionStatus(ActionContent.State lastDriveActionStatus) {
         this.lastDriveActionStatus = lastDriveActionStatus;
     }
+
 
     public ActionContent.State getLastDriveActionStatus() {
         return lastDriveActionStatus;
@@ -188,7 +192,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
             // Attach this belief set to this agent
             this.createBeliefSet(memory, fields);
 
-            memorise(BushfireAgent.MemoryEventType.BELIEVED.name(),
+            memorise(BushfireAgentW1.MemoryEventType.BELIEVED.name(),
                     MemoryEventValue.DEPENDENTS_INFO.name() + ":" + getDependentInfo() );
 
         } catch (BeliefBaseException e) {
@@ -248,7 +252,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
         } else if (perceptID.equals(Constants.ARRIVED)) {
             // do something
         } else if (perceptID.equals(Constants.BLOCKED)) {
-            replanCurrentDriveTo(Constants.EvacRoutingMode.carGlobalInformation);
+            replanCurrentWalkTo(Constants.EvacRoutingMode.sOneGlobal);
         }
 
         // handle percept spread on social network
@@ -283,7 +287,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
 
     private void handleFireVisual() {
         // Always replan when we see fire
-        replanCurrentDriveTo(Constants.EvacRoutingMode.carGlobalInformation);
+        replanCurrentWalkTo(Constants.EvacRoutingMode.sOneGlobal);
     }
 
     protected void checkBarometersAndTriggerResponseAsNeeded() {
@@ -355,11 +359,11 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
             // CAREFUL: Must use LIFO when pushing multiple goals that should be executed sequentially
             // onto the Jill stack
             post(new GoalActNow("ActNow")); // 1. will execute second
-            post(new GoalInitialResponse("InitialResponse")); // 2. will execute first
+            post(new GoalInitialResponseW1("InitialResponse")); // 2. will execute first
 
         } else if (breach == MemoryEventValue.INITIAL_RESPONSE_THRESHOLD_BREACHED) {
             memorise(MemoryEventType.DECIDED.name(), MemoryEventValue.TRIGGER_INITIAL_RESPONSE_NOW.name());
-            post(new GoalInitialResponse("InitialResponse"));
+            post(new GoalInitialResponseW1("InitialResponseW1"));
 
         } else if (breach == MemoryEventValue.FINAL_RESPONSE_THRESHOLD_BREACHED) {
             memorise(MemoryEventType.DECIDED.name(), MemoryEventValue.TRIGGER_FINAL_RESPONSE_NOW.name());
@@ -433,7 +437,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
         //}
     }
 
-    boolean startDrivingTo(Location location, Constants.EvacRoutingMode routingMode) {
+    boolean startWalkingTo1(Location location, Constants.EvacRoutingMode routingMode) {
         if (location == null) return false;
         memorise(MemoryEventType.DECIDED.name(), MemoryEventValue.GOTO_LOCATION.name() + ":" + location.toString());
         double distToTravel = getTravelDistanceTo(location);
@@ -443,25 +447,25 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
         }
 
         Object[] params = new Object[4];
-        params[0] = Constants.DRIVETO;
+        params[0] = Constants.WALKTO1;
         params[1] = location.getCoordinates();
         params[2] = getTime() + 5.0; // five secs from now;
         params[3] = routingMode;
-        memorise(MemoryEventType.ACTIONED.name(), Constants.DRIVETO
+        memorise(MemoryEventType.ACTIONED.name(), Constants.WALKTO1
                 + ":"+ location + ":" + String.format("%.0f", distToTravel) + "m away");
         EnvironmentAction action = new EnvironmentAction(
                 Integer.toString(getId()),
-                Constants.DRIVETO, params);
+                Constants.WALKTO1, params);
         addActiveEnvironmentAction(action); // will be reset by updateAction()
         subgoal(action); // should be last call in any plan step
         return true;
     }
 
-    protected boolean replanCurrentDriveTo(Constants.EvacRoutingMode routingMode) {
-        memorise(MemoryEventType.ACTIONED.name(), Constants.REPLAN_CURRENT_DRIVETO);
+    protected boolean replanCurrentWalkTo(Constants.EvacRoutingMode routingMode) {
+        memorise(MemoryEventType.ACTIONED.name(), Constants.REPLAN_CURRENT_WALKTO1);
         EnvironmentAction action = new EnvironmentAction(
                 Integer.toString(getId()),
-                Constants.REPLAN_CURRENT_DRIVETO,
+                Constants.REPLAN_CURRENT_WALKTO1,
                 new Object[] {routingMode});
         addActiveEnvironmentAction(action); // will be reset by updateAction()
         subgoal(action); // should be last call in any plan step
@@ -506,10 +510,10 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
         if (actionState == ActionContent.State.PASSED ||
                 actionState == ActionContent.State.FAILED ||
                 actionState == ActionContent.State.DROPPED) {
-            memorise(BushfireAgent.MemoryEventType.BELIEVED.name(), BushfireAgent.MemoryEventValue.LAST_ENV_ACTION_STATE.name() + "=" + actionState.name());
+            memorise(BushfireAgentW1.MemoryEventType.BELIEVED.name(), BushfireAgentW1.MemoryEventValue.LAST_ENV_ACTION_STATE.name() + "=" + actionState.name());
             removeActiveEnvironmentAction(content.getAction_type()); // remove the action
 
-            if (content.getAction_type().equals(Constants.DRIVETO)) {
+            if (content.getAction_type().equals(Constants.WALKTO1)) {
                 setLastDriveActionStatus(content.getState()); // save the finish state of the action
                 // Wake up the agent that was waiting for external action to finish
                 // FIXME: BDI actions put agent in suspend, which won't work for multiple intention stacks
@@ -700,7 +704,7 @@ public abstract class BushfireAgent extends  Agent implements io.github.agentsoz
 
     class Prefix{
         public String toString() {
-            return String.format("Time %05.0f BushfireAgent %-4s : ", getTime(), getId());
+            return String.format("Time %05.0f BushfireAgentW1 %-4s : ", getTime(), getId());
         }
     }
 

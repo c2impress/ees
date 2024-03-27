@@ -35,22 +35,20 @@ import io.github.agentsoz.util.Global;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.gbl.Gbl;
 import org.matsim.core.mobsim.framework.MobsimAgent;
+import org.matsim.core.mobsim.framework.PlanAgent;
 import org.matsim.core.mobsim.qsim.agents.WithinDayAgentUtils;
 import org.matsim.core.network.NetworkUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
-	private static final Logger log = LoggerFactory.getLogger(EvacDrivetoActionHandlerV2.class ) ;
+public final class EvacWalkto1ActionHandlerV2 implements BDIActionHandler {
+	private static final Logger log = LoggerFactory.getLogger(EvacWalkto1ActionHandlerV2.class ) ;
 
 	private final MATSimModel model;
-	public EvacDrivetoActionHandlerV2(MATSimModel model ) {
+	public EvacWalkto1ActionHandlerV2(MATSimModel model ) {
 //		log.setLevel(Level.DEBUG);
 		this.model = model;
 	}
@@ -60,7 +58,7 @@ public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
 		{
 			// dsingh 16/may/18 - towards #12
 			if (args.length < 4) {
-				log.error("agent " + agentID + " DRIVETO handler has " +args.length + " args (>=4 expected); will continue without handling this event");
+				log.error("agent " + agentID + " WALKTO1 handler has " +args.length + " args (>=4 expected); will continue without handling this event");
 				return ActionContent.State.RUNNING; // FIXME: seems incorrect to return RUNNING
 			}
 		}
@@ -76,8 +74,10 @@ public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
 
 		// preparations:
 
-		MobsimAgent mobsimAgent = model.getMobsimAgentFromIdString(agentID) ;
 
+		System.out.println("Attempting to retrieve MobsimAgent with agentID: " + agentID);
+
+		MobsimAgent mobsimAgent = model.getMobsimAgentFromIdString(agentID);
 
 		if (mobsimAgent == null) {
 			log.error("MobsimAgent " + agentID +
@@ -97,21 +97,21 @@ public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
 		}
 		
 		// routingMode:
-		String routingMode = null ; // could have some default
+		String routingMode = null; // could have some default
+
 		switch (((Constants.EvacRoutingMode) args[3])) {
-			case carFreespeed:
-				routingMode = Constants.EvacRoutingMode.carFreespeed.name() ;
+			case sOneFree:
+				routingMode = Constants.EvacRoutingMode.sOneFree.name();
 				break;
-			case carGlobalInformation:
-				routingMode = Constants.EvacRoutingMode.carGlobalInformation.name() ;
-				break;
-			case emergencyVehicle:
-				routingMode = Constants.EvacRoutingMode.emergencyVehicle.name();
+			case sOneGlobal:
+				routingMode = Constants.EvacRoutingMode.sOneGlobal.name();
 				break;
 			default:
-				throw new RuntimeException("not implemented" ) ;
+
+				throw new RuntimeException("not implemented");
 		}
 
+// Assuming `printPlan` is a method that prints the plan details to the console
 		System.out.println("Before flush:");
 		printPlan("before flush: ", mobsimAgent);
 		model.getReplanner().editPlans().flushEverythingBeyondCurrent(mobsimAgent);
@@ -135,11 +135,10 @@ public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
 		}
 
 		// new evac destination
-		String activity = (args.length >=  5 && args[4] instanceof String) ? (String)args[4] : "DriveTo";
+		String activity = (args.length >=  5 && args[4] instanceof String) ? (String)args[4] : "WalkTo1";
 		Activity newAct = model.getReplanner().editPlans().createFinalActivity( activity, newLinkId ) ;
 		model.getReplanner().editPlans().addActivityAtEnd(mobsimAgent, newAct, routingMode) ;
 		printPlan("after adding act: " , mobsimAgent ) ;
-
 		// add an empty leg between the replan and evac activities
 		if (addReplanActivity) {
 			model.getReplanner().editTrips().insertEmptyTrip(
@@ -147,8 +146,7 @@ public final class EvacDrivetoActionHandlerV2 implements BDIActionHandler {
 					rnewAct, newAct, routingMode);
 		}
 
-		// Record that this agent is driving
-		model.getAgentManager().getAgentsPerformingBdiDriveTo().put(agentID, newLinkId.toString());
+		model.getAgentManager().getAgentsPerformingBdiWalkTo1().put(agentID, newLinkId.toString());
 
 		log.debug("------------------------------------------------------------------------------------------"); ;
 		return ActionContent.State.RUNNING;

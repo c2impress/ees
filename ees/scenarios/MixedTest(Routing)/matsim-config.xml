@@ -1,0 +1,178 @@
+<?xml version="1.0" ?>
+<!DOCTYPE config SYSTEM "http://www.matsim.org/files/dtd/config_v2.dtd">
+<config>
+
+
+	<module name="global">
+		<param name="randomSeed" value="148256" />
+		<param name="coordinateSystem" value="EPSG:2100" />
+		<param name="numberOfThreads" value="1" />
+		<!--using 1 thread for testing; could be a different number for deployment. kai, nov'17-->
+	</module>
+
+
+	<module name="network">
+		<param name="inputNetworkFile" value="Egaleo_network_epsg2100.xml.gz" />
+		<param name= "timeVariantNetwork" value= "false" />
+		<!--<param name= "inputChangeEventsFile" value= "scenario_matsim_network_change_events.xml" />-->
+	</module>
+
+	<module name="vehicles" >
+		<param name="vehiclesFile" value="mode-vehicles.xml" />
+	</module>
+
+	<module name="plans">
+		<param name="inputPlansFile" value="Egaleo_Population_epsg2100.xml" />
+	</module>
+
+
+
+	<module name="controler">
+		<param name="outputDirectory" value="output" />
+		<param name="firstIteration" value="0" />
+		<param name="lastIteration" value="0" />
+		<param name="mobsim" value="qsim" />
+		<param name = "snapshotFormat" value="googleearth"/> <!-- enable KML output; also must enable snapshotperiod -->
+		<param name= "routingAlgorithmType" value="FastAStarLandmarks" /> <!-- The A* algorithm combines the benefits of both Dijkstra's algorithm (which guarantees the shortest path) and greedy algorithms (which prioritize efficiency). By using a heuristic, such as landmarks, the algorithm can make educated guesses about the cost to reach the destination from a particular node, which helps it search more efficiently and find paths faster.-->
+
+	</module>
+
+
+	<!-- ava.lang.IllegalArgumentException: Module qsim of type org.matsim.core.config.groups.QSimConfigGroup doesn't accept unkown parameters. Parameter carFreespeed is not part of the valid parameters: [mainMode, usePersonIdForMissingVehicleId, trafficDynamics, timeStepSize, insertingWaitingVehiclesBeforeDrivingVehicles, useLanes, usingFastCapacityUpdate, snapshotStyle, vehicleBehavior, removeStuckVehicles, isSeepModeStorageFree, flowCapacityFactor, nodeOffset, linkWidth, storageCapacityFactor, startTime, vehiclesSource, seepMode, numberOfThreads, linkDynamics, snapshotperiod, isRestrictingSeepage, stuckTime, simStarttimeInterpretation, endTime, simEndtimeInterpretation, filterSnapshots]
+  -->
+	<module name="qsim">
+		<!-- If vehicles should all be the same default vehicle, or come from the vehicles file, or something else.  Possible values:  defaultVehicle modeVehicleTypesFromVehiclesData fromVehiclesData -->
+		<param name="vehiclesSource" value="modeVehicleTypesFromVehiclesData" />
+		<param name="mainMode" value="car,sOne"/>
+
+
+		<param name="linkDynamics" value="PassingQ" /> <!-- Once various vehicles have different maximum speeds, the standard QSim, even with multiple main modes, is no longer sufficient, since it uses FIFO (First In, First Out) as the queuing discipline, meaning that fast vehicles cannot pass slower vehicles. Here, the so-called Passing(Vehicle)Q can be used instead. It replaces the FIFO sorting criterion—where vehicles are sorted by the sequence in which they arrive on the link—by a sorting employing the so-called earliest link exit time, computed from link enter time and freespeed travel time. Now, using the minimum of vehicle and link maximum speeds, the freespeed travel time can be differentiated be- tween vehicles, allowing fast vehicles to obtain an earlier link exit time, even if they enter later than slow vehicles. Details and resulting fundamental diagrams are given by Agarwal et al. (2015b).  -->
+		<!-- options: queue withHoles kinematicWaves  -->
+		<param name="trafficDynamics" value="withHoles" /> <!-- The "withHoles" option includes features to represent certain behaviors related to lane changing and overtaking. While not directly tailored to pedestrians, it might provide a bit more flexibility to model pedestrian-like movements, such as avoiding obstacles or maneuvering in crowds. -->
+		<param name="startTime" value="06:00:00" />
+		<param name="endTime" value="29:59:59" />
+		<param name = "snapshotperiod"	value = "00:00:00"/> <!-- 00:00:00 means NO snapshot writing, 00:00:30 means every 30 secs -->
+		<param name= "flowCapacityFactor" value= "1" />
+		<param name= "storageCapacityFactor" value= "1" />
+		<param name="numberOfThreads" value="1" />
+		
+		<!--setting this to 1 for testing; could be set to a higher number for deployment.  kai, nov'17-->
+		<!-- <param name="vehicleBehavior" value="wait"/> once we add in vehicle sharing agents have to wait till vehicle is avaiable (For example, a vehicle may
+be shared between family members, but one member will be late in returning a vehicle. For such
+situations,) -->
+	</module>
+
+
+
+	<module name="planCalcScore">
+		<param name="learningRate" value="1.0" />
+		<param name="BrainExpBeta" value="2.0" />
+		<parameterset type="scoringParameters">
+			<param name="lateArrival" value="-18" />
+			<param name="earlyDeparture" value="-0" />
+			<param name="performing" value="+6" />
+			<param name="waiting" value="-0" />
+			<parameterset type="modeParams">
+				<param name="mode" value="walk"/>
+				<param name="marginalUtilityOfDistance_util_m" value="0.0" />
+			</parameterset>
+			<parameterset type="modeParams">
+			  <param name="mode" value="pt"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-3.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+			    <param name="mode" value="car" />
+			    <param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="truck"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sOne"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sTwo"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sThree"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sFour"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sFive"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sSix"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="modeParams">
+				<param name="mode" value="sSeven"/>
+				<param name="marginalUtilityOfTraveling_util_hr" value="-6.0" />
+			</parameterset>
+
+			<parameterset type="activityParams">
+				<param name="activityType"    value="home" /> <!-- home -->
+				<param name="priority"        value="1" />
+				<param name="typicalDuration" value="12:00:00" />
+				<param name="minimalDuration" value="08:00:00" />
+			</parameterset>
+
+			<parameterset type="activityParams">
+				<param name="activityType"    value="shop" />
+				<param name="priority"        value="1" />
+				<param name="typicalDuration" value="01:00:00" />
+				<param name="minimalDuration" value="00:30:00" />
+			</parameterset>
+
+			<parameterset type="activityParams">
+				<param name="activityType"    value="h" />
+				<param name="priority"        value="1" />
+				<param name="typicalDuration" value="00:01:10" />
+				<param name="minimalDuration" value="00:01:01" />
+			</parameterset>
+		</parameterset>
+	</module>
+
+
+	<module name="planscalcroute">
+	    <param name="networkModes" value="car,sOne,sTwo,sThree,sFour,sFive,sSix,sSeven"/>
+	</module>
+
+
+	<module name="strategy">
+		<param name="maxAgentPlanMemorySize" value="5" /> <!-- 0 means unlimited -->
+		<parameterset type="strategysettings">
+			<param name="strategyName" value="BestScore"/>
+			<param name="weight" value="0.9"/>
+		</parameterset>
+		<parameterset type="strategysettings">
+			<param name="strategyName" value="ReRoute"/>
+			<param name="weight" value="0.1"/>
+		</parameterset>
+	</module>
+
+
+	<module name="parallelEventHandling" >
+		<param name="numberOfThreads" value="1" />
+	</module>
+
+
+
+
+</config>

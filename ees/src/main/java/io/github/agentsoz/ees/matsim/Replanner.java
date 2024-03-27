@@ -87,6 +87,20 @@ public final class Replanner {
 		switch( evacRoutingMode ) {
 			case carFreespeed:
 				return editRoutes ;
+			case sOneFree:
+				return editRoutes ;
+			case sTwoFree:
+				return editRoutes ;
+			case sThreeFree:
+				return editRoutes ;
+			case sFourFree:
+				return editRoutes ;
+			case sFiveFree:
+				return editRoutes ;
+			case sSixFree:
+				return editRoutes ;
+			case sSevenFree:
+				return editRoutes ;
 			default:
 				throw new RuntimeException("not implemented.  See how editRoutes is constructed.  " +
 												   "Should, however, also not be needed; try using editTrips or " +

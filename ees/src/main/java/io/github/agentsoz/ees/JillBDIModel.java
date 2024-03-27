@@ -30,6 +30,7 @@ import io.github.agentsoz.bdiabm.v2.AgentDataContainer;
 import io.github.agentsoz.dataInterface.DataClient;
 import io.github.agentsoz.dataInterface.DataServer;
 import io.github.agentsoz.ees.agents.archetype.ArchetypeAgent;
+import io.github.agentsoz.ees.agents.archetype.ArchetypeAgentW1;
 import io.github.agentsoz.ees.util.Utils;
 import io.github.agentsoz.jill.lang.Agent;
 import io.github.agentsoz.util.Location;
@@ -527,6 +528,32 @@ public class JillBDIModel extends JillModel implements DataClient {
 				Agent thisAgent = (Agent)getAgent(Integer.valueOf(id));
 				if (thisAgent instanceof ArchetypeAgent) {
 					ArchetypeAgent agent = (ArchetypeAgent) getAgent(Integer.valueOf(id));
+					String type = thisAgent.getClass().getSimpleName();
+					Location[] fromTo = agent.getCurrentLocation();
+					String linkId = fromTo[0].getName().split(":")[0];
+					String status = agent.getCurrentStatus();
+					String receivedMessages = agent.getReceivedMessages();
+					agentsMetrics.put(id, new AgentMetricData(id, type, status, linkId, fromTo[0], fromTo[1], receivedMessages));
+
+					String statusType = status.split(":")[0];
+					LinkMetricData linkMetricData = linksMetrics.containsKey(linkId) ?
+							linksMetrics.get(linkId) :
+							new LinkMetricData(linkId, fromTo[0], fromTo[1]);
+					switch (statusType) {
+						case "at":
+							linkMetricData.setAgentsInActivities(linkMetricData.getAgentsInActivities()+1);
+							break;
+						case "to":
+							linkMetricData.setAgentsDriving(linkMetricData.getAgentsDriving()+1);
+							break;
+						default:
+							// ignore the rest
+							break;
+					}
+					linksMetrics.put(linkId, linkMetricData);
+				}
+				else if (thisAgent instanceof ArchetypeAgentW1) {
+					ArchetypeAgentW1 agent = (ArchetypeAgentW1) getAgent(Integer.valueOf(id));
 					String type = thisAgent.getClass().getSimpleName();
 					Location[] fromTo = agent.getCurrentLocation();
 					String linkId = fromTo[0].getName().split(":")[0];

@@ -34,11 +34,11 @@ import org.matsim.core.mobsim.qsim.agents.WithinDayAgentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ReplanDriveToDefaultActionHandlerV2 implements BDIActionHandler {
-	private static final Logger log = LoggerFactory.getLogger(ReplanDriveToDefaultActionHandlerV2.class ) ;
+public final class ReplanWalkTo1DefaultActionHandlerV2 implements BDIActionHandler {
+	private static final Logger log = LoggerFactory.getLogger(ReplanWalkTo1DefaultActionHandlerV2.class ) ;
 
 	private final MATSimModel model;
-	public ReplanDriveToDefaultActionHandlerV2(MATSimModel model ) {
+	public ReplanWalkTo1DefaultActionHandlerV2(MATSimModel model ) {
 		this.model = model;
 	}
 	@Override
@@ -56,7 +56,7 @@ public final class ReplanDriveToDefaultActionHandlerV2 implements BDIActionHandl
 		Gbl.assertIf( args[0] instanceof Constants.EvacRoutingMode) ; // could have some default
 		Constants.EvacRoutingMode routingMode = (Constants.EvacRoutingMode)args[0];
 		PlanElement currentPlanElement = WithinDayAgentUtils.getCurrentPlanElement(mobsimAgent);
-
+		System.out.println("Current leg mode: " + mobsimAgent);
 		if (currentPlanElement instanceof Leg) { // Check if the current plan element is a Leg
 			model.getReplanner().editTrips().replanCurrentTrip(mobsimAgent, 0.0, routingMode.name());
 		}

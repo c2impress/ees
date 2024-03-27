@@ -189,8 +189,30 @@ class EvacAgent implements MobsimDriverAgent, HasPerson, PlanAgent, HasModifiabl
 
 	@Override
 	public String toString() {
-		return basicAgentDelegate.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append("EvacAgent{");
+
+		if (basicAgentDelegate != null) {
+			Id<Person> personId = basicAgentDelegate.getId();
+			builder.append("personId=").append(personId == null ? "null" : personId.toString());
+
+			State agentState = basicAgentDelegate.getState();
+			builder.append(", state=").append(agentState == null ? "null" : agentState.toString());
+
+			if (basicAgentDelegate.getVehicle() != null) {
+				Id<Vehicle> vehicleId = basicAgentDelegate.getVehicle().getId();
+				builder.append(", vehicleId=").append(vehicleId == null ? "null" : vehicleId.toString());
+			} else {
+				builder.append(", vehicleId=null");
+			}
+		} else {
+			builder.append("basicAgentDelegate=null");
+		}
+
+		builder.append("}");
+		return builder.toString();
 	}
+
 
 	@Override
 	public final PlanElement getCurrentPlanElement() {

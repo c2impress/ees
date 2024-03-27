@@ -99,6 +99,7 @@ public final class Utils {
 					String type = ((Activity)element).getType();
 					String xy = String.format("%f,%f", ((Activity)element).getCoord().getX(), ((Activity)element).getCoord().getY());
 					initArgs.add(new String[]{type,xy});
+
 				}
 				element.toString();
 			}
