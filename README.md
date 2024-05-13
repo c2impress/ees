@@ -42,10 +42,9 @@ ees/ees/scenarios/SingleModeCar_NoError
 Scenario 2
 ```
 ees/ees/scenarios/MultiMode_EventBased_Incorrect
-
 ```
+
 Scenario 3
 ```
 ees/ees/scenarios/MultiMode_VehicleNotFound_Error
-
 ```
