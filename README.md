@@ -16,8 +16,36 @@ git submodule update --init --recursive
 
 ## How to run
 
-run class at:
+run classes at:
 ```
 ees/ees/src/test/java/io/github/agentsoz/ees/it
-/MixedTestRouting.java
+/SingleModeCarNoError.java
+```
+```
+ees/ees/src/test/java/io/github/agentsoz/ees/it
+/MultiModeEventBasedIncorrect.java
+```
+```
+ees/ees/src/test/java/io/github/agentsoz/ees/it
+/MultiModeVehicleNotFoundError.java
+```
+
+
+## Respective scenarios
+
+
+Scenario 1
+```
+ees/ees/scenarios/SingleModeCar_NoError
+```
+
+Scenario 2
+```
+ees/ees/scenarios/MultiMode_EventBased_Incorrect
+
+```
+Scenario 3
+```
+ees/ees/scenarios/MultiMode_VehicleNotFound_Error
+
 ```

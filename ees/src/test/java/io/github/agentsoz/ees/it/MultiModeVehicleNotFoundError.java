@@ -29,12 +29,12 @@ import org.matsim.testcases.MatsimTestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MixedTestRouting {
+public class MultiModeVehicleNotFoundError {
 
 
     // have tests in separate classes so that they run, at least under maven, in separate JVMs.  kai, nov'17
 
-    private static final Logger log = LoggerFactory.getLogger(MixedTestRouting.class) ;
+    private static final Logger log = LoggerFactory.getLogger(MultiModeVehicleNotFoundError.class) ;
 
     @Rule
     public MatsimTestUtils utils = new MatsimTestUtils() ;
@@ -44,7 +44,7 @@ public class MixedTestRouting {
 
         utils.getOutputDirectory(); // creates a clean one so need to call this first
         String[] args = {
-                "--config", "scenarios/MixedTest(Routing)/ees.xml",
+                "--config", "scenarios/MultiMode_VehicleNotFound_Error/ees.xml",
         };
         Run.main(args);
 

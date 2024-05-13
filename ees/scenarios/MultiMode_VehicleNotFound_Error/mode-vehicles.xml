@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vehicleDefinitions xmlns="http://www.matsim.org/files/dtd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.matsim.org/files/dtd http://www.matsim.org/files/dtd/vehicleDefinitions_v1.0.xsd">
+
+  <!-- Vehicle types definitions -->
+  <vehicleType id="car">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.7"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="carFreespeed">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.7"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+  <vehicleType id="carGlobalInformation">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.7"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sOne">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.5"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+
+  <vehicleType id="sTwo">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="10"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sThree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.33"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sFour">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.1"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sFive">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.41"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sSix">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.19"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sSeven">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="2"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+  <vehicleType id="sOneFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.5"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="truck">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.1"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+  <vehicleType id="sTwoFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="10"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sThreeFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.33"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sFourFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.1"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sFiveFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.41"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sSixFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.19"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sSevenFree">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="2"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+  <vehicleType id="sOneGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="0.5"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+
+
+  <vehicleType id="sTwoGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="10"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sThreeGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.33"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sFourGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.1"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sFiveGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.41"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+  <vehicleType id="sSixGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="1.19"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+
+  <vehicleType id="sSevenGlobal">
+    <length meter="0.4"/>
+    <width meter="0.4"/>
+    <maximumVelocity meterPerSecond="2"/>
+    <passengerCarEquivalents pce="0.1" />
+  </vehicleType>
+
+</vehicleDefinitions>
