@@ -14,37 +14,36 @@ git submodule update --init --recursive
 ./mvnw package
 ```
 
-## How to run
 
-run classes at:
-```
-ees/ees/src/test/java/io/github/agentsoz/ees/it
-/SingleModeCarNoError.java
-```
-```
-ees/ees/src/test/java/io/github/agentsoz/ees/it
-/MultiModeEventBasedIncorrect.java
-```
-```
-ees/ees/src/test/java/io/github/agentsoz/ees/it
-/MultiModeVehicleNotFoundError.java
-```
-
-
-## Respective scenarios
+## Scenario files 
 
 
 Scenario 1
 ```
 ees/ees/scenarios/SingleModeCar_NoError
 ```
+Respective run class at:
+```
+ees/ees/src/test/java/io/github/agentsoz/ees/it
+/SingleModeCarNoError.java
+```
 
 Scenario 2
 ```
 ees/ees/scenarios/MultiMode_EventBased_Incorrect
 ```
+Respective run class at:
+```
+ees/ees/src/test/java/io/github/agentsoz/ees/it
+/MultiModeEventBasedIncorrect.java
+```
 
 Scenario 3
 ```
 ees/ees/scenarios/MultiMode_VehicleNotFound_Error
+```
+Respective run class at:
+```
+ees/ees/src/test/java/io/github/agentsoz/ees/it
+/MultiModeVehicleNotFoundError.java
 ```
