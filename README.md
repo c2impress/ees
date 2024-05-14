@@ -62,7 +62,9 @@ A new mode named `sOne` has been defined, complete with associated routing (`sOn
 - **Expected Outcome:** The results are as expected without any errors, demonstrating that the car mode functions correctly for evacuation.
 
 #### Scenario 2: MultiModeEventBasedIncorrect
-- **Description:** Initially, a dummy activity utilizing car mode is added, followed by the use of the newly defined `sOne` mode for evacuation. However, the event file inaccurately reports the use of `sOne` mode, not aligning with the predefined maximum speed for each mode.
+- **Description:** Initially, [an activity utilizing car leg mode](https://github.com/c2impress/ees/blob/00df55347e30522ade7a35a0caf975c8ccc908e0/ees/scenarios/MultiMode_EventBased_Incorrect/Egaleo_Population_epsg2100.xml#L35C1-L36C25)) is added, followed by the use of the newly defined `sOne` mode for evacuation. However, the resulting event file inaccurately reports the use of `sOne` mode, not aligning with the predefined maximum speed for each mode. In other words, while the event file indicates that the agent uses the sOne mode for evacuation, the actual movement speeds do not conform to the specified limits for this mode.
+
+
 
 
 #### Scenario 3: MultiModeVehicleNotFoundError
