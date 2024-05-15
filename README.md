@@ -62,11 +62,11 @@ A new mode named `sOne` has been defined, complete with associated routing (`sOn
 - **Expected Outcome:** The results are as expected without any errors, demonstrating that the car mode functions correctly for evacuation.
 
 #### Scenario 2: MultiModeEventBasedIncorrect
-- **Description:** Initially, [an activity utilizing car leg mode](https://github.com/c2impress/ees/blob/00df55347e30522ade7a35a0caf975c8ccc908e0/ees/scenarios/MultiMode_EventBased_Incorrect/Egaleo_Population_epsg2100.xml#L35C1-L36C25) is added. This is followed by using the newly defined sOne mode for evacuation. Despite the setup functioning without errors and the event file indicating sOne mode usage for evacuation, the actual evacuation speed and behavior correspond to the car mode.
+- **Description:** Initially, [a car leg mode](https://github.com/c2impress/ees/blob/00df55347e30522ade7a35a0caf975c8ccc908e0/ees/scenarios/MultiMode_EventBased_Incorrect/Egaleo_Population_epsg2100.xml#L35C1-L36C25) is added. This is followed by using the newly defined sOne mode for evacuation. Despite the setup functioning without errors and the event file indicating sOne mode usage for evacuation, the actual evacuation speed and behavior correspond to the car mode.
 
 
 #### Scenario 3: MultiModeVehicleNotFoundError
-- **Description:** If the activity using the car leg mode from Scenario 2 is omitted, an error occurs stating, "Could not find requested vehicle 0 in simulation for agent EvacAgent{personId=0, state=LEG, vehicleId=0_sOne} with id 0."
+- **Description:** If the car leg mode from Scenario 2 is omitted, an error occurs stating, "Could not find requested vehicle 0 in simulation for agent EvacAgent{personId=0, state=LEG, vehicleId=0_sOne} with id 0."
 - **Issues:** While MATSim by default utilizes IDs like vehicleId=0_sOne for added modes (i.e., sOne), BDI expects vehicle IDs used for the car leg mode (i.e., vehicleId=0).
 
 
